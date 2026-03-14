@@ -20,6 +20,8 @@ interface DashboardStore {
   searchQuery: string;
   searchResults: SearchResult[];
   searchEngine: SearchEngine | null;
+  searchMode: "fuzzy" | "semantic";
+  setSearchMode: (mode: "fuzzy" | "semantic") => void;
 
   apiKey: string;
   chatMessages: ChatMessage[];
@@ -135,6 +137,7 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
   searchQuery: "",
   searchResults: [],
   searchEngine: null,
+  searchMode: "fuzzy",
 
   apiKey: "",
   chatMessages: [],
@@ -159,12 +162,17 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
     set({ graph, searchEngine, searchResults });
   },
   selectNode: (nodeId) => set({ selectedNodeId: nodeId, nodeExplanation: null }),
+  setSearchMode: (mode) => set({ searchMode: mode }),
   setSearchQuery: (query) => {
     const engine = get().searchEngine;
+    const mode = get().searchMode;
     if (!engine || !query.trim()) {
       set({ searchQuery: query, searchResults: [] });
       return;
     }
+    // Currently both modes use the same fuzzy engine
+    // When embeddings are available, "semantic" mode will use SemanticSearchEngine
+    void mode;
     const searchResults = engine.search(query);
     set({ searchQuery: query, searchResults });
   },

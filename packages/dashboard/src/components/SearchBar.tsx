@@ -15,6 +15,8 @@ export default function SearchBar() {
   const graph = useDashboardStore((s) => s.graph);
   const setSearchQuery = useDashboardStore((s) => s.setSearchQuery);
   const selectNode = useDashboardStore((s) => s.selectNode);
+  const searchMode = useDashboardStore((s) => s.searchMode);
+  const setSearchMode = useDashboardStore((s) => s.setSearchMode);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,10 +96,32 @@ export default function SearchBar() {
           placeholder="Search nodes by name, summary, or tags..."
           className="flex-1 bg-gray-700 text-white text-sm rounded px-3 py-1.5 border border-gray-600 focus:outline-none focus:border-blue-500 placeholder-gray-400"
         />
+        <div className="flex items-center gap-1 bg-gray-700 rounded p-0.5 shrink-0">
+          <button
+            onClick={() => setSearchMode("fuzzy")}
+            className={`text-[10px] px-1.5 py-0.5 rounded transition-colors ${
+              searchMode === "fuzzy"
+                ? "bg-gray-600 text-white"
+                : "text-gray-400 hover:text-gray-300"
+            }`}
+          >
+            Fuzzy
+          </button>
+          <button
+            onClick={() => setSearchMode("semantic")}
+            className={`text-[10px] px-1.5 py-0.5 rounded transition-colors ${
+              searchMode === "semantic"
+                ? "bg-gray-600 text-white"
+                : "text-gray-400 hover:text-gray-300"
+            }`}
+          >
+            Semantic
+          </button>
+        </div>
         {searchQuery.trim() && (
           <span className="text-xs text-gray-400 shrink-0">
             {searchResults.length} result{searchResults.length !== 1 ? "s" : ""}{" "}
-            <span className="text-gray-500">(fuzzy)</span>
+            <span className="text-gray-500">({searchMode})</span>
           </span>
         )}
       </div>
