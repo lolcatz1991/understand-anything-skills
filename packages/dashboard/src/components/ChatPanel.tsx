@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { useDashboardStore } from "../store";
 
 export default function ChatPanel() {
@@ -57,6 +58,16 @@ export default function ChatPanel() {
     }
   };
 
+  // Clear API key from store and localStorage so the user can re-enter it.
+  // Note: the API key is stored in localStorage as plain text. This is a known
+  // tradeoff — it keeps the UX simple (key survives page reloads) at the cost
+  // of exposing the key to anything that can read localStorage. A more secure
+  // approach would use a backend proxy or session-scoped memory only.
+  const handleClearKey = () => {
+    localStorage.removeItem("ua-api-key");
+    setApiKey("");
+  };
+
   return (
     <div className="h-full w-full bg-gray-800 rounded-lg flex flex-col overflow-hidden">
       {/* Header */}
@@ -64,14 +75,25 @@ export default function ChatPanel() {
         <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
           Chat
         </h3>
-        {chatMessages.length > 0 && (
-          <button
-            onClick={clearChat}
-            className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
-          >
-            Clear
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {apiKey && (
+            <button
+              onClick={handleClearKey}
+              className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
+              title="Change API key"
+            >
+              Change Key
+            </button>
+          )}
+          {chatMessages.length > 0 && (
+            <button
+              onClick={clearChat}
+              className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
+            >
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* API Key Input */}
@@ -122,15 +144,66 @@ export default function ChatPanel() {
             key={i}
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
-            <div
-              className={`max-w-[85%] rounded-lg px-3 py-2 text-xs leading-relaxed whitespace-pre-wrap ${
-                msg.role === "user"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-700 text-gray-200"
-              }`}
-            >
-              {msg.content}
-            </div>
+            {msg.role === "user" ? (
+              <div className="max-w-[85%] rounded-lg px-3 py-2 text-xs leading-relaxed whitespace-pre-wrap bg-blue-600 text-white">
+                {msg.content}
+              </div>
+            ) : (
+              <div className="max-w-[85%] rounded-lg px-3 py-2 text-xs leading-relaxed bg-gray-700 text-gray-200 chat-markdown">
+                <ReactMarkdown
+                  components={{
+                    h1: ({ children }) => (
+                      <h1 className="text-sm font-bold mb-1 mt-2 first:mt-0">{children}</h1>
+                    ),
+                    h2: ({ children }) => (
+                      <h2 className="text-xs font-bold mb-1 mt-2 first:mt-0">{children}</h2>
+                    ),
+                    h3: ({ children }) => (
+                      <h3 className="text-xs font-semibold mb-1 mt-1.5 first:mt-0">{children}</h3>
+                    ),
+                    p: ({ children }) => (
+                      <p className="mb-1.5 last:mb-0">{children}</p>
+                    ),
+                    ul: ({ children }) => (
+                      <ul className="list-disc list-inside mb-1.5 space-y-0.5">{children}</ul>
+                    ),
+                    ol: ({ children }) => (
+                      <ol className="list-decimal list-inside mb-1.5 space-y-0.5">{children}</ol>
+                    ),
+                    code: ({ className, children }) => {
+                      const isBlock = className?.includes("language-");
+                      return isBlock ? (
+                        <code className="block bg-gray-900 rounded px-2 py-1.5 mb-1.5 overflow-x-auto text-[11px] leading-relaxed">
+                          {children}
+                        </code>
+                      ) : (
+                        <code className="bg-gray-900 rounded px-1 py-0.5 text-[11px]">
+                          {children}
+                        </code>
+                      );
+                    },
+                    pre: ({ children }) => (
+                      <pre className="mb-1.5 last:mb-0">{children}</pre>
+                    ),
+                    strong: ({ children }) => (
+                      <strong className="font-semibold text-white">{children}</strong>
+                    ),
+                    a: ({ href, children }) => (
+                      <a href={href} className="text-blue-400 underline hover:text-blue-300" target="_blank" rel="noopener noreferrer">
+                        {children}
+                      </a>
+                    ),
+                    blockquote: ({ children }) => (
+                      <blockquote className="border-l-2 border-gray-500 pl-2 mb-1.5 text-gray-400 italic">
+                        {children}
+                      </blockquote>
+                    ),
+                  }}
+                >
+                  {msg.content}
+                </ReactMarkdown>
+              </div>
+            )}
           </div>
         ))}
 
