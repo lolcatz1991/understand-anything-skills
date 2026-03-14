@@ -5,6 +5,7 @@ import GraphView from "./components/GraphView";
 import CodeViewer from "./components/CodeViewer";
 import SearchBar from "./components/SearchBar";
 import NodeInfo from "./components/NodeInfo";
+import ChatPanel from "./components/ChatPanel";
 
 function App() {
   const graph = useDashboardStore((s) => s.graph);
@@ -55,9 +56,9 @@ function App() {
           <CodeViewer />
         </div>
 
-        {/* Bottom-left: Chat placeholder */}
-        <div className="min-h-0 min-w-0 bg-gray-800 rounded-lg flex items-center justify-center">
-          <p className="text-gray-400 text-sm">Chat panel (coming soon)</p>
+        {/* Bottom-left: Chat */}
+        <div className="min-h-0 min-w-0">
+          <ChatPanel />
         </div>
 
         {/* Bottom-right: Node Info */}

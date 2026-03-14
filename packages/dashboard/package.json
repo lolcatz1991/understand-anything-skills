@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@dagrejs/dagre": "^2.0.4",
     "@monaco-editor/react": "^4.7.0",
     "@understand-anything/core": "workspace:*",
