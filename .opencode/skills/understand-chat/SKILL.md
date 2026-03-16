@@ -1,11 +1,15 @@
 ---
 name: understand-chat
-description: Use when you need to ask questions about a codebase or understand code using a knowledge graph
-argument-hint: [query]
+description: Answer questions about a codebase using its knowledge graph — search for relevant nodes, edges, and layers to give grounded answers
 license: MIT
+compatibility: opencode
+metadata:
+  author: Lum1104
+  version: "1.0.4"
+  tags: codebase,chat,knowledge-graph,q&a
 ---
 
-# /understand-chat
+# understand-chat
 
 Answer questions about this codebase using the knowledge graph at `.understand-anything/knowledge-graph.json`.
 
@@ -30,7 +34,7 @@ The knowledge graph JSON has this structure:
 
 ## Instructions
 
-1. Check that `.understand-anything/knowledge-graph.json` exists in the current project root. If not, tell the user to run `/understand` first.
+1. Check that `.understand-anything/knowledge-graph.json` exists in the current project root. If not, tell the user to run the `understand` skill first.
 
 2. **Read project metadata only** — use Grep or Read with a line limit to extract just the `"project"` section from the top of the file for context (name, description, languages, frameworks).
 

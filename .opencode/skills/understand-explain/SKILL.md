@@ -1,11 +1,15 @@
 ---
 name: understand-explain
-description: Use when you need a deep-dive explanation of a specific file, function, or module in the codebase
-argument-hint: [file-path]
+description: Provide a deep-dive explanation of a specific file, function, or module — reads the source, traces relationships in the knowledge graph, and explains the component in full context
 license: MIT
+compatibility: opencode
+metadata:
+  author: Lum1104
+  version: "1.0.4"
+  tags: codebase,explain,knowledge-graph,deep-dive
 ---
 
-# /understand-explain
+# understand-explain
 
 Provide a thorough, in-depth explanation of a specific code component.
 
@@ -30,7 +34,7 @@ The knowledge graph JSON has this structure:
 
 ## Instructions
 
-1. Check that `.understand-anything/knowledge-graph.json` exists. If not, tell the user to run `/understand` first.
+1. Check that `.understand-anything/knowledge-graph.json` exists. If not, tell the user to run the `understand` skill first.
 
 2. **Find the target node** — use Grep to search the knowledge graph for the component: "$ARGUMENTS"
    - For file paths (e.g., `src/auth/login.ts`): search for `"filePath"` matches

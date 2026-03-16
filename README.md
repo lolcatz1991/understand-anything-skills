@@ -8,6 +8,7 @@
   <a href="#-quick-start"><img src="https://img.shields.io/badge/Quick_Start-blue?style=for-the-badge" alt="Quick Start" /></a>
   <a href="https://github.com/Lum1104/Understand-Anything/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License: MIT" /></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/Claude_Code-Plugin-8A2BE2?style=for-the-badge" alt="Claude Code Plugin" /></a>
+  <a href="https://opencode.ai"><img src="https://img.shields.io/badge/OpenCode-Skills-orange?style=for-the-badge" alt="OpenCode Skills" /></a>
   <a href="https://lum1104.github.io/Understand-Anything"><img src="https://img.shields.io/badge/Homepage-d4a574?style=for-the-badge" alt="Homepage" /></a>
 </p>
 
@@ -19,7 +20,9 @@
 
 **You just joined a new team. The codebase is 200,000 lines of code. Where do you even start?**
 
-Understand Anything is a [Claude Code](https://docs.anthropic.com/en/docs/claude-code) plugin that analyzes your project with a multi-agent pipeline, builds a knowledge graph of every file, function, class, and dependency, then gives you an interactive dashboard to explore it all visually. Stop reading code blind. Start seeing the big picture.
+Understand Anything analyzes your project with a multi-agent pipeline, builds a knowledge graph of every file, function, class, and dependency, then gives you an interactive dashboard to explore it all visually. Stop reading code blind. Start seeing the big picture.
+
+Works with **Claude Code**, **OpenCode**, and skill-sharing platforms like **skills.sh**.
 
 ---
 
@@ -54,14 +57,18 @@ Understand Anything fixes this by combining **LLM intelligence** with **static a
 
 ## 🚀 Quick Start
 
-### 1. Install the plugin
+Understand Anything supports multiple AI coding tools. Choose the one you use:
+
+### Claude Code
+
+#### 1. Install the plugin
 
 ```bash
 /plugin marketplace add Lum1104/Understand-Anything
 /plugin install understand-anything
 ```
 
-### 2. Analyze your codebase
+#### 2. Analyze your codebase
 
 ```bash
 /understand
@@ -69,7 +76,7 @@ Understand Anything fixes this by combining **LLM intelligence** with **static a
 
 A multi-agent pipeline scans your project, extracts every file, function, class, and dependency, then builds a knowledge graph saved to `.understand-anything/knowledge-graph.json`.
 
-### 3. Explore the dashboard
+#### 3. Explore the dashboard
 
 ```bash
 /understand-dashboard
@@ -77,7 +84,7 @@ A multi-agent pipeline scans your project, extracts every file, function, class,
 
 An interactive web dashboard opens with your codebase visualized as a graph — color-coded by architectural layer, searchable, and clickable. Select any node to see its code, relationships, and a plain-English explanation.
 
-### 4. Keep learning
+#### 4. Keep learning
 
 ```bash
 # Ask anything about the codebase
@@ -92,6 +99,57 @@ An interactive web dashboard opens with your codebase visualized as a graph — 
 # Generate an onboarding guide for new team members
 /understand-onboard
 ```
+
+---
+
+### OpenCode
+
+OpenCode discovers skills automatically from `.opencode/skills/` in your project. This repo ships those skill files at the top level so you can add them to any project.
+
+#### 1. Add the skills to your project
+
+Copy the `.opencode/` directory from this repo into your project root:
+
+```bash
+# From your project root — clone or download this repo, then copy:
+cp -r path/to/understand-anything-skills/.opencode /your/project/.opencode
+```
+
+Or copy just the skills sub-directory if you already have other OpenCode config:
+
+```bash
+cp -r path/to/understand-anything-skills/.opencode/skills /your/project/.opencode/skills
+cp -r path/to/understand-anything-skills/.opencode/commands /your/project/.opencode/commands
+```
+
+#### 2. Use the skills in OpenCode
+
+OpenCode agents automatically discover and load the skills. You can also invoke them as slash commands:
+
+```bash
+/understand          # Analyze the codebase
+/understand-chat     # Ask questions about the code
+/understand-diff     # Analyze change impact
+/understand-explain  # Deep-dive into a component
+/understand-onboard  # Generate onboarding guide
+/understand-dashboard # Launch visualization
+```
+
+#### 3. Global installation (optional)
+
+To use these skills across all your projects, copy to the global OpenCode config:
+
+```bash
+cp -r path/to/understand-anything-skills/.opencode/skills ~/.config/opencode/skills/
+```
+
+---
+
+### skills.sh / other skill-sharing platforms
+
+The skills in this repository follow the standard `SKILL.md` format recognized by OpenCode-compatible tools and skill-sharing platforms. Each skill is in `.opencode/skills/<name>/SKILL.md` with proper YAML frontmatter including `name`, `description`, `license`, and `compatibility` fields.
+
+To use these skills with any compatible tool, copy the skill directories from `.opencode/skills/` to the location your tool expects (typically `.opencode/skills/`, `.claude/skills/`, or `~/.agents/skills/`).
 
 ---
 
@@ -165,14 +223,24 @@ File analyzers run in parallel (up to 3 concurrent). Supports incremental update
 ### Project Structure
 
 ```
-understand-anything-plugin/
-  .claude-plugin/  — Plugin manifest
-  agents/          — Specialized AI agents
-  skills/          — Skill definitions (/understand, /understand-chat, etc.)
-  src/             — TypeScript source (context-builder, diff-analyzer, etc.)
-  packages/
-    core/          — Analysis engine (types, persistence, tree-sitter, search, schema, tours)
-    dashboard/     — React + TypeScript web dashboard
+understand-anything-skills/
+  .opencode/               — OpenCode skills and commands
+    skills/                — Skills for OpenCode's agent skill system
+      understand/
+      understand-chat/
+      understand-diff/
+      understand-explain/
+      understand-onboard/
+      understand-dashboard/
+    commands/              — OpenCode slash commands
+  understand-anything-plugin/
+    .claude-plugin/        — Claude Code plugin manifest
+    agents/                — Specialized AI agents (Claude Code)
+    skills/                — Skill definitions for Claude Code
+    src/                   — TypeScript source (context-builder, diff-analyzer, etc.)
+    packages/
+      core/                — Analysis engine (types, persistence, tree-sitter, search, schema, tours)
+      dashboard/           — React + TypeScript web dashboard
 ```
 
 ### Tech Stack

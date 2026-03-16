@@ -1,10 +1,15 @@
 ---
 name: understand-onboard
-description: Use when you need to generate an onboarding guide for new team members joining a project
+description: Generate a comprehensive markdown onboarding guide from the project's knowledge graph — covers architecture, key files, guided tour, and complexity hotspots
 license: MIT
+compatibility: opencode
+metadata:
+  author: Lum1104
+  version: "1.0.4"
+  tags: codebase,onboarding,knowledge-graph,documentation
 ---
 
-# /understand-onboard
+# understand-onboard
 
 Generate a comprehensive onboarding guide from the project's knowledge graph.
 
@@ -29,7 +34,7 @@ The knowledge graph JSON has this structure:
 
 ## Instructions
 
-1. Check that `.understand-anything/knowledge-graph.json` exists. If not, tell the user to run `/understand` first.
+1. Check that `.understand-anything/knowledge-graph.json` exists. If not, tell the user to run the `understand` skill first.
 
 2. **Read project metadata** — use Grep or Read with a line limit to extract the `"project"` section (name, description, languages, frameworks).
 
