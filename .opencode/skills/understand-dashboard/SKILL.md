@@ -1,11 +1,15 @@
 ---
 name: understand-dashboard
-description: Launch the interactive web dashboard to visualize a codebase's knowledge graph
-argument-hint: [project-path]
+description: Launch the interactive web dashboard to visualize a codebase's knowledge graph — starts the Vite dev server and opens the browser
 license: MIT
+compatibility: opencode
+metadata:
+  author: Lum1104
+  version: "1.0.4"
+  tags: codebase,dashboard,visualization,knowledge-graph
 ---
 
-# /understand-dashboard
+# understand-dashboard
 
 Start the Understand Anything dashboard to visualize the knowledge graph for the current project.
 
@@ -17,7 +21,7 @@ Start the Understand Anything dashboard to visualize the knowledge graph for the
 
 2. Check that `.understand-anything/knowledge-graph.json` exists in the project directory. If not, tell the user:
    ```
-   No knowledge graph found. Run /understand first to analyze this project.
+   No knowledge graph found. Run the understand skill first to analyze this project.
    ```
 
 3. Find the dashboard code. The dashboard is at `packages/dashboard/` relative to this plugin's root directory. Use the Bash tool to resolve the path:

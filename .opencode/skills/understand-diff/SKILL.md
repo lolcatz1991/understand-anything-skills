@@ -1,10 +1,15 @@
 ---
 name: understand-diff
-description: Use when you need to analyze git diffs or pull requests to understand what changed, affected components, and risks
+description: Analyze git diffs or pull request changes against the knowledge graph — identify changed components, affected dependencies, cross-layer impacts, and risk
 license: MIT
+compatibility: opencode
+metadata:
+  author: Lum1104
+  version: "1.0.4"
+  tags: codebase,diff,knowledge-graph,impact-analysis,risk
 ---
 
-# /understand-diff
+# understand-diff
 
 Analyze the current code changes against the knowledge graph at `.understand-anything/knowledge-graph.json`.
 
@@ -29,12 +34,12 @@ The knowledge graph JSON has this structure:
 
 ## Instructions
 
-1. Check that `.understand-anything/knowledge-graph.json` exists. If not, tell the user to run `/understand` first.
+1. Check that `.understand-anything/knowledge-graph.json` exists. If not, tell the user to run the `understand` skill first.
 
 2. **Get the changed files list** (do NOT read the graph yet):
    - If on a branch with uncommitted changes: `git diff --name-only`
    - If on a feature branch: `git diff main...HEAD --name-only` (or the base branch)
-   - If the user specifies a PR number: get the diff from that PR
+   - If the user specifies a PR number or additional arguments from `$ARGUMENTS`: use that context
 
 3. **Read project metadata only** — use Grep or Read with a line limit to extract just the `"project"` section for context.
 
